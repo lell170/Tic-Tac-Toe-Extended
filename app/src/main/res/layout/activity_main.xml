@@ -29,8 +29,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.485"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/playItem3"
-            app:srcCompat="@drawable/coffee_wood" />
+            app:layout_constraintTop_toTopOf="@+id/playItem3" />
 
         <ImageView
             android:id="@+id/playItem5"
@@ -42,8 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.485"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playItem2"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:layout_constraintTop_toBottomOf="@+id/playItem2" />
 
         <View
             android:id="@+id/divider2"
@@ -69,8 +67,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/playItem8"
             app:layout_constraintEnd_toStartOf="@+id/playItem8"
             app:layout_constraintTop_toBottomOf="@+id/playItem4"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/coffee_gradient" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/playItem8"
@@ -85,8 +82,7 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/playItem5"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/playItem4"
@@ -95,8 +91,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toStartOf="@+id/playItem5"
-            app:layout_constraintTop_toBottomOf="@+id/playItem1"
-            app:srcCompat="@drawable/coffee_gradient" />
+            app:layout_constraintTop_toBottomOf="@+id/playItem1" />
 
         <View
             android:id="@+id/divider"
@@ -119,8 +114,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@+id/playItem5"
-            app:layout_constraintTop_toBottomOf="@+id/playItem3"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:layout_constraintTop_toBottomOf="@+id/playItem3" />
 
         <View
             android:id="@+id/divider13"
@@ -143,8 +137,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toEndOf="@+id/playItem2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/divider15"
@@ -162,12 +155,11 @@
 
         <ImageView
             android:id="@+id/playItem1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toStartOf="@+id/playItem2"
-            app:layout_constraintTop_toTopOf="@+id/playItem2"
-            app:srcCompat="@drawable/coffee_wood" />
+            app:layout_constraintTop_toTopOf="@+id/playItem2" />
 
         <ImageView
             android:id="@+id/playItem9"
@@ -176,8 +168,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@+id/playItem8"
-            app:layout_constraintTop_toBottomOf="@+id/playItem6"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:layout_constraintTop_toBottomOf="@+id/playItem6" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.Guideline
@@ -207,5 +198,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="534dp" />
+
+    <Button
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="onClick"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 </android.support.constraint.ConstraintLayout>

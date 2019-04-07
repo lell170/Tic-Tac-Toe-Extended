@@ -1,23 +1,46 @@
 package org.artjom.tictacttoe.extended;
 
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private List<ImageView> playItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        ImageView image1 = findViewById(R.id.playItem1);
+        ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
 
-        image1.setVisibility(View.INVISIBLE);
+        this.setPlayItems(AppUtils.getAllImagesForViewGroup(playItemsLayout));
+
+        for (ImageView playItem : this.getPlayItems()) {
+            PlayItemService.makeInvisible(playItem);
+        }
     }
 
-    public void click(View view) {
+    public List<ImageView> getPlayItems() {
+        return playItems;
+    }
+
+    public void setPlayItems(List<ImageView> playItems) {
+        this.playItems = playItems;
+    }
+
+    // test
+    public void onClick(View view) {
+        for (ImageView playItem : playItems) {
+            PlayItemService.makeVisible(playItem);
+            PlayItemService.setDrawableImage(playItem, R.drawable.coffee_gradient);
+        }
     }
 }
