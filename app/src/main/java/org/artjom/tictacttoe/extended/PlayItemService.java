@@ -1,22 +1,15 @@
 package org.artjom.tictacttoe.extended;
 
-import android.view.View;
 import android.widget.ImageView;
 
 //TODO: make as SingleTon?
 public class PlayItemService {
 
-    public static void makeInvisible(ImageView imageView) {
-        imageView.setVisibility(View.INVISIBLE);
+    public static void addImage(ImageView playItem, int drawableImageId) {
+        playItem.setImageResource(drawableImageId);
     }
 
-    public static void makeVisible(ImageView imageView) {
-        imageView.setVisibility(View.VISIBLE);
+    public static void removeImage(ImageView playItem) {
+        playItem.setImageResource(0);
     }
-
-    public static void setDrawableImage(ImageView imageView, int drawableImageId) {
-        imageView.setBackgroundResource(drawableImageId);
-    }
-
-
 }
