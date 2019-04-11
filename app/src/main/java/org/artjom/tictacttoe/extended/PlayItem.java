@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 public class PlayItem extends AppCompatImageView {
 
     private boolean isSet;
-    private int position;
+    private PlayItemPosition playItemPosition;
 
     public PlayItem(Context context) {
         super(context);
@@ -30,11 +30,11 @@ public class PlayItem extends AppCompatImageView {
         isSet = set;
     }
 
-    public int getPosition() {
-        return position;
+    public PlayItemPosition getPlayItemPosition() {
+        return playItemPosition;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setPlayItemPosition(PlayItemPosition playItemPosition) {
+        this.playItemPosition = playItemPosition;
     }
 }

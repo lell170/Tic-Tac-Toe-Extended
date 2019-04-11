@@ -20,4 +20,23 @@ public class AppUtils {
         return imageViews;
     }
 
+    public static List<PlayItemPosition> getFreePlayItemPositions() {
+        //TODO: implement me
+        return new ArrayList<>();
+    }
+
+    public static PlayItemPosition getFreeRandomPlayItemPosition() {
+        //TODO: implement me
+        return null;
+    }
+
+    public static PlayItemPosition getPlayItemPositionByPlayItem(PlayItem playItem) {
+        //TODO: implement regex check
+
+        int x = Integer.valueOf(Character.toString(playItem.getTag().toString().charAt(1)));
+        int y = Integer.valueOf(Character.toString(playItem.getTag().toString().charAt(3)));
+
+        return new PlayItemPosition(x,y);
+    }
+
 }

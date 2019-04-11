@@ -7,9 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private int idImagePlayItem1;
     private int idImagePlayItem2;
 
-    boolean change = false;
+    private List<PlayItemPosition> playItemPositions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
-        this.playItems = AppUtils.getAllImagesForViewGroup(playItemsLayout);
+        playItems = AppUtils.getAllImagesForViewGroup(playItemsLayout);
 
-        this.idImagePlayItem1 = R.drawable.coffee_yellow_for_android;
-        this.idImagePlayItem2 = R.drawable.coffee_green_for_android;
+        idImagePlayItem1 = R.drawable.coffee_yellow_for_android;
+        idImagePlayItem2 = R.drawable.coffee_green_for_android;
     }
 
     // test method...
@@ -39,14 +37,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void playItemClick(View playItem) {
-        if(change) {
-            PlayItemService.addImage((PlayItem) playItem, this.idImagePlayItem2);
-            change = false;
-        }
-        else {
-            PlayItemService.addImage((PlayItem) playItem, this.idImagePlayItem1);
-            change = true;
-        }
+    public void playItemClick(View view) {
+        PlayItem playItem = (PlayItem) view;
+
+        PlayItemPosition playItemPositionByPlayItem = AppUtils.getPlayItemPositionByPlayItem(playItem);
+        playItem.setPlayItemPosition(playItemPositionByPlayItem);
+
+        playItemPositions.add(playItemPositionByPlayItem);
+        System.out.println("die Position des Elementen " + playItem.getPlayItemPosition());
+    }
+
+    private void computerGo() {
+// TODO Comp. move
     }
 }
