@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         PlayItem playItem = (PlayItem) view;
         putPlayItemToBoard(playItem, userPlayItemId, WHICH_ITEM.USER_ITEM);
 
-        if (checkDiagonalFromLeft(playItems, WHICH_ITEM.USER_ITEM) || checkDiagonalFromRight(playItems, WHICH_ITEM.USER_ITEM)) {
+        if (checkDiagonalFromLeft(playItems, WHICH_ITEM.USER_ITEM) || checkDiagonalFromRight(playItems, WHICH_ITEM.USER_ITEM) || checkHorizontally(playItems, WHICH_ITEM.USER_ITEM) || checkVertically(playItems, WHICH_ITEM.USER_ITEM)) {
             gameOver();
         } else {
             computerGoGoGo();
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     .filter(plItm -> plItm
                             .getTag()
                             .toString()
-                            .equals("x" + freePlayItemPosition.getX() + "y" + freePlayItemPosition.getY()))
+                            .equals("x" + freePlayItemPosition.getRow() + "y" + freePlayItemPosition.getCol()))
                     .findAny()
                     .get();
 
@@ -67,23 +67,71 @@ public class MainActivity extends AppCompatActivity {
         playItemPositions.add(playItemPositionByPlayItem);
     }
 
+    //TODO: some ugly methods.... :-(
     private boolean checkDiagonalFromLeft(List<PlayItem> playItems, WHICH_ITEM whichItem) {
-        return IntStream.rangeClosed(1, 3).boxed().allMatch(integer -> playItems.stream().anyMatch(playItem -> {
-            if (playItem.getPlayItemPosition() != null) {
-                return playItem.getPlayItemPosition().getX() == integer && playItem.getPlayItemPosition().getY() == integer && playItem.getWhichItem()==whichItem;
-            } else return false;
-        }));
+        return IntStream.rangeClosed(1, 3)
+                .boxed()
+                .allMatch(integer -> playItems.stream()
+                        .anyMatch(playItem -> {
+                            if (playItem.getPlayItemPosition() != null) {
+                                return playItem.getPlayItemPosition().getRow() == integer &&
+                                        playItem.getPlayItemPosition().getCol() == integer &&
+                                        playItem.getWhichItem() == whichItem;
+                            } else return false;
+                        }));
     }
 
     private boolean checkDiagonalFromRight(List<PlayItem> playItems, WHICH_ITEM whichItem) {
-        return IntStream.rangeClosed(1, 3).boxed().allMatch(integer -> playItems.stream().anyMatch(playItem -> {
-            if (playItem.getPlayItemPosition() != null) {
-                return playItem.getPlayItemPosition().getX() == integer && playItem.getPlayItemPosition().getY() == (3 - integer + 1) && playItem.getWhichItem()==whichItem;
-            } else return false;
-        }));
+        return IntStream.rangeClosed(1, 3).boxed()
+                .allMatch(integer -> playItems.stream()
+                        .anyMatch(playItem -> {
+                            if (playItem.getPlayItemPosition() != null) {
+                                return playItem.getPlayItemPosition().getRow() == integer &&
+                                        playItem.getPlayItemPosition().getCol() == (3 - integer + 1) &&
+                                        playItem.getWhichItem() == whichItem;
+                            } else return false;
+                        }));
     }
 
-    //TODO: very ugly method!!
+    private boolean checkHorizontally(List<PlayItem> playItems, WHICH_ITEM whichItem) {
+        for (int i = 1; i < 4; i++) {
+            final int rowNumber = i;
+            if (IntStream.rangeClosed(1, 3)
+                    .boxed()
+                    .allMatch(integer -> playItems.stream()
+                            .anyMatch(playItem -> {
+                                if (playItem.getPlayItemPosition() != null) {
+                                    return playItem.getPlayItemPosition().getRow() == rowNumber &&
+                                            playItem.getPlayItemPosition().getCol() == integer &&
+                                            playItem.getWhichItem() == whichItem;
+                                } else return false;
+                            }))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkVertically(List<PlayItem> playItems, WHICH_ITEM whichItem) {
+        for (int i = 1; i < 4; i++) {
+            final int colNumber = i;
+            if (IntStream.rangeClosed(1, 3)
+                    .boxed()
+                    .allMatch(integer -> playItems.stream()
+                            .anyMatch(playItem -> {
+                                if (playItem.getPlayItemPosition() != null) {
+                                    return playItem.getPlayItemPosition().getRow() == integer &&
+                                            playItem.getPlayItemPosition().getCol() == colNumber &&
+                                            playItem.getWhichItem() == whichItem;
+                                } else return false;
+                            }))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private void gameOver() {
         System.out.println("Game over");
 
