@@ -5,6 +5,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class GameService {
 
@@ -20,22 +22,25 @@ public class GameService {
         return imageViews;
     }
 
-    public static PlayItemPosition getFreePlayItemPosition(List<PlayItemPosition> playItemPositions) {
-        int[] x = new int[]{1, 2, 3};
-        int[] y = new int[]{1, 2, 3};
+    public static PlayItemPosition getFreePlayItemPosition(List<PlayItem> playItems) {
+        PlayItem playItemWithNoPosition = playItems.stream()
+                .filter(playItem -> playItem.getPlayItemPosition() == null).findAny().orElse(null);
 
-        for (int yy : y) {
-            for (int xx : x) {
-                if (!playItemPositions.contains(new PlayItemPosition(xx, yy))) {
-                    return new PlayItemPosition(xx, yy);
-                }
-            }
+        if (playItemWithNoPosition != null) {
+            return getPlayItemPositionByPlayItem(playItemWithNoPosition);
         }
         return null;
     }
 
-    public static PlayItemPosition getFreeRandomPlayItemPosition() {
-        //TODO: implement me
+    public static PlayItemPosition getFreeRandomPlayItemPosition(List<PlayItem> playItems) {
+        List<PlayItem> playItemsWithNoPosition = playItems.stream()
+                .filter(playItem -> playItem.getPlayItemPosition() == null).collect(Collectors.toList());
+
+        if (!playItemsWithNoPosition.isEmpty()) {
+            return getPlayItemPositionByPlayItem(playItemsWithNoPosition.stream()
+                    .skip(playItemsWithNoPosition.isEmpty() ? 0 : new Random().nextInt(playItemsWithNoPosition.size()))
+                    .findFirst().get());
+        }
         return null;
     }
 

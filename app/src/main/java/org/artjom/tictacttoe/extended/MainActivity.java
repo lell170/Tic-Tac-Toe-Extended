@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void computerGoGoGo() {
-        PlayItemPosition freePlayItemPosition = GameService.getFreePlayItemPosition(this.playItemPositions);
+    private void computerTurn() {
+        PlayItemPosition freePlayItemPosition = GameService.getFreeRandomPlayItemPosition(playItems);
 
         if (freePlayItemPosition != null) {
             PlayItem playItem = playItems.stream()
