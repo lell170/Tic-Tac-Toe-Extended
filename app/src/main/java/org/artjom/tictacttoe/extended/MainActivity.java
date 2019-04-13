@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<PlayItemPosition> playItemPositions = new ArrayList<>();
 
-    public enum WHICH_ITEM {COMPUTER_ITEM, USER_ITEM}
+    public enum WHICH_ITEM {COMPUTER, USER}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +29,19 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
         playItems = GameService.getAllImagesForViewGroup(playItemsLayout);
 
-        userPlayItemId = R.drawable.coffee_yellow_for_android;
-        computerPlayItemId = R.drawable.coffee_green_for_android;
+        userPlayItemId = R.drawable.coffee_green;
+        computerPlayItemId = R.drawable.coffee_gray;
     }
 
     public void playItemClick(View view) {
         PlayItem playItem = (PlayItem) view;
-        putPlayItemToBoard(playItem, userPlayItemId, WHICH_ITEM.USER_ITEM);
+        putPlayItemToBoard(playItem, userPlayItemId, WHICH_ITEM.USER);
 
-        if (checkDiagonalFromLeft(playItems, WHICH_ITEM.USER_ITEM) || checkDiagonalFromRight(playItems, WHICH_ITEM.USER_ITEM) || checkHorizontally(playItems, WHICH_ITEM.USER_ITEM) || checkVertically(playItems, WHICH_ITEM.USER_ITEM)) {
-            gameOver();
+        if (checkForWin(WHICH_ITEM.USER)) {
+            gameOver(WHICH_ITEM.USER.name());
+            disableAllfields();
         } else {
-            computerGoGoGo();
+            computerTurn();
         }
     }
 
@@ -55,7 +57,12 @@ public class MainActivity extends AppCompatActivity {
                     .findAny()
                     .get();
 
-            putPlayItemToBoard(playItem, computerPlayItemId, WHICH_ITEM.COMPUTER_ITEM);
+            putPlayItemToBoard(playItem, computerPlayItemId, WHICH_ITEM.COMPUTER);
+        }
+
+        if (checkForWin(WHICH_ITEM.COMPUTER)) {
+            gameOver(WHICH_ITEM.COMPUTER.name());
+            disableAllfields();
         }
     }
 
@@ -132,8 +139,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void gameOver() {
-        System.out.println("Game over");
+    private void gameOver(String whoHasWin) {
+        TextView textView = findViewById(R.id.resultTextView);
+        textView.setText(whoHasWin + " has win");
+    }
 
+    public void onClickReset(View view) {
+        finish();
+        startActivity(getIntent());
+    }
+
+    private void disableAllfields() {
+        for (PlayItem playItem : playItems) {
+            playItem.setEnabled(false);
+        }
+    }
+
+    private boolean checkForWin(WHICH_ITEM whichItem) {
+
+        return checkDiagonalFromLeft(playItems, whichItem) ||
+                checkDiagonalFromRight(playItems, whichItem) ||
+                checkHorizontally(playItems, whichItem) ||
+                checkVertically(playItems, whichItem);
     }
 }
