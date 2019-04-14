@@ -1,5 +1,7 @@
 package org.artjom.tictacttoe.extended;
 
+import android.animation.ValueAnimator;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -141,7 +143,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void gameOver(String whoHasWin) {
         TextView textView = findViewById(R.id.resultTextView);
-        textView.setText(whoHasWin + " has win");
+        textView.setText(whoHasWin + " has won!!!");
+
+        final float startSize = 42; // Size in pixels
+        final float endSize = 12;
+        long animationDuration = 600; // Animation duration in ms
+
+        ValueAnimator animator = ValueAnimator.ofFloat(startSize, endSize);
+        animator.setDuration(animationDuration);
+
+        animator.addUpdateListener(valueAnimator -> {
+            float animatedValue = (float) valueAnimator.getAnimatedValue();
+            textView.setTextSize(animatedValue);
+            textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        });
+
+        animator.start();
     }
 
     public void onClickReset(View view) {
