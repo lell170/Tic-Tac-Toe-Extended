@@ -31,8 +31,8 @@ android {
                     from variant.outputs*.outputFile
                     into "apk/"
                 }
-                //if you don't want to delete the file after copying it comment the line below
-                delete variant.outputs*.outputFile
+                // if you don't want to delete the file after copying it comment the line below
+                // delete variant.outputs*.outputFile
             }
         }
     }
