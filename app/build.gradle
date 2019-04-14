@@ -20,6 +20,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.name}-${variant.versionName}.apk"
+        }
+        variant.assembleProvider.configure { assemble ->
+            assemble.doLast {
+
+                copy {
+                    from variant.outputs*.outputFile
+                    into "apk/"
+                }
+                //if you don't want to delete the file after copying it comment the line below
+                delete variant.outputs*.outputFile
+            }
+        }
+    }
 }
 
 dependencies {
