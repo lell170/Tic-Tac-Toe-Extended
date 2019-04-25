@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -37,9 +38,9 @@ public class GameService {
                 .filter(playItem -> playItem.getPlayItemPosition() == null).collect(Collectors.toList());
 
         if (!playItemsWithNoPosition.isEmpty()) {
-            return getPlayItemPositionByPlayItem(playItemsWithNoPosition.stream()
-                    .skip(playItemsWithNoPosition.isEmpty() ? 0 : new Random().nextInt(playItemsWithNoPosition.size()))
-                    .findFirst().get());
+            return getPlayItemPositionByPlayItem(Objects.requireNonNull(playItemsWithNoPosition.stream()
+                    .skip(new Random().nextInt(playItemsWithNoPosition.size()))
+                    .findFirst().orElse(null)));
         }
         return null;
     }
