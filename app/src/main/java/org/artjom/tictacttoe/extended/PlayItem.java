@@ -8,7 +8,7 @@ public class PlayItem extends AppCompatImageView {
 
     private PlayItemPosition playItemPosition;
 
-    private MainActivity.WHICH_ITEM whichItem;
+    private PlayItemState playItemState;
 
     public PlayItem(Context context) {
         super(context);
@@ -30,11 +30,11 @@ public class PlayItem extends AppCompatImageView {
         this.playItemPosition = playItemPosition;
     }
 
-    public MainActivity.WHICH_ITEM getWhichItem() {
-        return whichItem;
+    public PlayItemState getPlayItemState() {
+        return playItemState;
     }
 
-    public void setWhichItem(MainActivity.WHICH_ITEM whichItem) {
-        this.whichItem = whichItem;
+    public void setPlayItemState(PlayItemState playItemState) {
+        this.playItemState = playItemState;
     }
 }

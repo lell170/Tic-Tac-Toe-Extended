@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -18,10 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int userPlayItemId;
     private int computerPlayItemId;
-
-    private List<PlayItemPosition> playItemPositions = new ArrayList<>();
-
-    public enum WHICH_ITEM {COMPUTER, USER}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +28,17 @@ public class MainActivity extends AppCompatActivity {
 
         userPlayItemId = R.drawable.coffee_green;
         computerPlayItemId = R.drawable.coffee_gray;
+
+        // start positions will be initialized. Empty state and Positions based of current PlayItem case
+        this.initializeStartPositions();
     }
 
     public void playItemClick(View view) {
         PlayItem playItem = (PlayItem) view;
-        putPlayItemToBoard(playItem, userPlayItemId, WHICH_ITEM.USER);
+        putPlayItemToBoard(playItem, userPlayItemId, PlayItemState.USER);
 
-        if (checkForWin(WHICH_ITEM.USER)) {
-            gameOver(WHICH_ITEM.USER.name());
+        if (checkForWin(PlayItemState.USER)) {
+            gameOver(PlayItemState.USER.name());
             disableAllfields();
         } else {
             computerTurn();
@@ -48,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void computerTurn() {
-        PlayItemPosition freePlayItemPosition = GameService.getFreeRandomPlayItemPosition(playItems);
+
+/*        final PlayItemPosition freePlayItemPosition = GameService.getFreeRandomPlayItemPosition(playItems);
 
         if (freePlayItemPosition != null) {
             PlayItem playItem = playItems.stream()
@@ -59,25 +58,26 @@ public class MainActivity extends AppCompatActivity {
                     .findAny()
                     .get();
 
-            putPlayItemToBoard(playItem, computerPlayItemId, WHICH_ITEM.COMPUTER);
-        }
+            putPlayItemToBoard(playItem, computerPlayItemId, PlayItemState.COMPUTER);
+        } */
 
-        if (checkForWin(WHICH_ITEM.COMPUTER)) {
-            gameOver(WHICH_ITEM.COMPUTER.name());
+        tryToWin(PlayItemState.COMPUTER);
+
+        if (checkForWin(PlayItemState.COMPUTER)) {
+            gameOver(PlayItemState.COMPUTER.name());
             disableAllfields();
         }
     }
 
-    private void putPlayItemToBoard(PlayItem playItem, int playItemImageId, WHICH_ITEM whichItem) {
+    private void putPlayItemToBoard(PlayItem playItem, int playItemImageId, PlayItemState playItemState) {
         GameService.addImage(playItem, playItemImageId);
         PlayItemPosition playItemPositionByPlayItem = GameService.getPlayItemPositionByPlayItem(playItem);
         playItem.setPlayItemPosition(playItemPositionByPlayItem);
-        playItem.setWhichItem(whichItem);
-        playItemPositions.add(playItemPositionByPlayItem);
+        playItem.setPlayItemState(playItemState);
     }
 
     //TODO: some ugly methods.... :-(
-    private boolean checkDiagonalFromLeft(List<PlayItem> playItems, WHICH_ITEM whichItem) {
+    private boolean checkDiagonalFromLeft(List<PlayItem> playItems, PlayItemState playItemState) {
         return IntStream.rangeClosed(1, 3)
                 .boxed()
                 .allMatch(integer -> playItems.stream()
@@ -85,24 +85,24 @@ public class MainActivity extends AppCompatActivity {
                             if (playItem.getPlayItemPosition() != null) {
                                 return playItem.getPlayItemPosition().getRow() == integer &&
                                         playItem.getPlayItemPosition().getCol() == integer &&
-                                        playItem.getWhichItem() == whichItem;
+                                        playItem.getPlayItemState() == playItemState;
                             } else return false;
                         }));
     }
 
-    private boolean checkDiagonalFromRight(List<PlayItem> playItems, WHICH_ITEM whichItem) {
+    private boolean checkDiagonalFromRight(List<PlayItem> playItems, PlayItemState playItemState) {
         return IntStream.rangeClosed(1, 3).boxed()
                 .allMatch(integer -> playItems.stream()
                         .anyMatch(playItem -> {
                             if (playItem.getPlayItemPosition() != null) {
                                 return playItem.getPlayItemPosition().getRow() == integer &&
                                         playItem.getPlayItemPosition().getCol() == (3 - integer + 1) &&
-                                        playItem.getWhichItem() == whichItem;
+                                        playItem.getPlayItemState() == playItemState;
                             } else return false;
                         }));
     }
 
-    private boolean checkHorizontally(List<PlayItem> playItems, WHICH_ITEM whichItem) {
+    private boolean checkHorizontally(List<PlayItem> playItems, PlayItemState whichItem) {
         for (int i = 1; i < 4; i++) {
             final int rowNumber = i;
             if (IntStream.rangeClosed(1, 3)
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (playItem.getPlayItemPosition() != null) {
                                     return playItem.getPlayItemPosition().getRow() == rowNumber &&
                                             playItem.getPlayItemPosition().getCol() == integer &&
-                                            playItem.getWhichItem() == whichItem;
+                                            playItem.getPlayItemState() == whichItem;
                                 } else return false;
                             }))) {
                 return true;
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean checkVertically(List<PlayItem> playItems, WHICH_ITEM whichItem) {
+    private boolean checkVertically(List<PlayItem> playItems, PlayItemState whichItem) {
         for (int i = 1; i < 4; i++) {
             final int colNumber = i;
             if (IntStream.rangeClosed(1, 3)
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (playItem.getPlayItemPosition() != null) {
                                     return playItem.getPlayItemPosition().getRow() == integer &&
                                             playItem.getPlayItemPosition().getCol() == colNumber &&
-                                            playItem.getWhichItem() == whichItem;
+                                            playItem.getPlayItemState() == whichItem;
                                 } else return false;
                             }))) {
                 return true;
@@ -172,11 +172,48 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkForWin(WHICH_ITEM whichItem) {
+    private boolean checkForWin(PlayItemState whichItem) {
 
         return checkDiagonalFromLeft(playItems, whichItem) ||
                 checkDiagonalFromRight(playItems, whichItem) ||
                 checkHorizontally(playItems, whichItem) ||
                 checkVertically(playItems, whichItem);
     }
+
+    private void tryToWin(PlayItemState playItemState) {
+
+        // count of play item positions of given type in all lines
+        long countPlayItemTypesInLine = playItems.stream()
+                .filter(playItem -> playItem.getPlayItemState() == playItemState && playItem.getPlayItemPosition().getRow() == 1)
+                .count();
+
+        // count of empty positions in all lines
+        long countEmptyPositionsInLine = playItems.stream()
+                .filter(playItem -> playItem.getPlayItemPosition().getRow() == 1 && playItem.getPlayItemState() == PlayItemState.EMPTY)
+                .count();
+
+        System.out.println("countPlayItemTypesInLine "+countPlayItemTypesInLine);
+        System.out.println("countEmptyPositionsInLine "+countEmptyPositionsInLine);
+
+        for (PlayItem playItem : playItems) {
+            if (playItem.getPlayItemPosition() != null) {
+                if (playItem.getPlayItemState() == playItemState) {
+
+                }
+            }
+        }
+
+    }
+
+    private void tryToPrevent(PlayItemState playItemState, PlayItemState opponentItemType) {
+        //TODO: implement me:)
+    }
+
+    private void initializeStartPositions() {
+        for (PlayItem playItem : playItems) {
+            playItem.setPlayItemPosition(GameService.getPlayItemPositionByPlayItem(playItem));
+            playItem.setPlayItemState(PlayItemState.EMPTY);
+        }
+    }
+
 }
