@@ -97,45 +97,6 @@ public class MainActivity extends AppCompatActivity {
                         }));
     }
 
-    private boolean checkHorizontally(List<PlayItem> playItems, PlayItemState whichItem) {
-        for (int i = 1; i < 4; i++) {
-            final int rowNumber = i;
-            if (IntStream.rangeClosed(1, 3)
-                    .boxed()
-                    .allMatch(integer -> playItems.stream()
-                            .anyMatch(playItem -> {
-                                if (playItem.getPlayItemPosition() != null) {
-                                    return playItem.getPlayItemPosition().getRow() == rowNumber &&
-                                            playItem.getPlayItemPosition().getCol() == integer &&
-                                            playItem.getPlayItemState() == whichItem;
-                                } else return false;
-                            }))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkVertically(List<PlayItem> playItems, PlayItemState whichItem) {
-        for (int i = 1; i < 4; i++) {
-            final int colNumber = i;
-            if (IntStream.rangeClosed(1, 3)
-                    .boxed()
-                    .allMatch(integer -> playItems.stream()
-                            .anyMatch(playItem -> {
-                                if (playItem.getPlayItemPosition() != null) {
-                                    return playItem.getPlayItemPosition().getRow() == integer &&
-                                            playItem.getPlayItemPosition().getCol() == colNumber &&
-                                            playItem.getPlayItemState() == whichItem;
-                                } else return false;
-                            }))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     private void gameOver(String whoHasWin) {
         TextView textView = findViewById(R.id.resultTextView);
         textView.setText(whoHasWin + " has won!!!");
@@ -167,12 +128,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkForWin(PlayItemState whichItem) {
+    private boolean checkForWin(PlayItemState playItemState) {
 
-        return checkDiagonalFromLeft(playItems, whichItem) ||
-                checkDiagonalFromRight(playItems, whichItem) ||
-                checkHorizontally(playItems, whichItem) ||
-                checkVertically(playItems, whichItem);
+        return checkDiagonalFromLeft(playItems, playItemState) ||
+                checkDiagonalFromRight(playItems, playItemState) ||
+                GameService.checkHorizontallyAndVertically(playItems, playItemState);
     }
 
     private void tryToWin() {

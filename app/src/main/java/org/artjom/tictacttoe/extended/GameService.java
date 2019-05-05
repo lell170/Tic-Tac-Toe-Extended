@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GameService {
 
@@ -60,5 +61,31 @@ public class GameService {
         playItem.setImageResource(drawableImageId);
     }
 
+    public static boolean checkHorizontallyAndVertically(List<PlayItem> playItems, PlayItemState playItemState) {
 
+        boolean horizontallyAndVerticallyCheck =
+                IntStream.rangeClosed(1, 3).boxed()
+                        .anyMatch(outerIterationNumber -> IntStream.rangeClosed(1, 3).boxed()
+                                .allMatch(innerIterationNumber -> {
+                                    boolean horizontally = playItems.stream()
+                                            .anyMatch(playItem -> playItem.getPlayItemState() == playItemState && playItem
+                                                    .getPlayItemPosition().getRow() == outerIterationNumber && playItem
+                                                    .getPlayItemPosition()
+                                                    .getCol() == innerIterationNumber);
+
+                                    boolean vertically = playItems.stream()
+                                            .anyMatch(playItem -> playItem.getPlayItemState() == playItemState && playItem
+                                                    .getPlayItemPosition().getCol() == outerIterationNumber && playItem
+                                                    .getPlayItemPosition()
+                                                    .getRow() == innerIterationNumber);
+
+                                    if (horizontally || vertically) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }));
+
+        return horizontallyAndVerticallyCheck;
+    }
 }
