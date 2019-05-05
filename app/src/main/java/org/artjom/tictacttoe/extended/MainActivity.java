@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void playItemClick(View view) {
         PlayItem playItem = (PlayItem) view;
-        putPlayItemToBoard(playItem, userPlayItemId, PlayItemState.USER);
+        putPlayItemToBoard(playItem, PlayItemState.USER);
 
         if (checkForWin(PlayItemState.USER)) {
             gameOver(PlayItemState.USER.name());
@@ -47,21 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void computerTurn() {
 
-/*        final PlayItemPosition freePlayItemPosition = GameService.getFreeRandomPlayItemPosition(playItems);
-
-        if (freePlayItemPosition != null) {
-            PlayItem playItem = playItems.stream()
-                    .filter(plItm -> plItm
-                            .getTag()
-                            .toString()
-                            .equals("x" + freePlayItemPosition.getRow() + "y" + freePlayItemPosition.getCol()))
-                    .findAny()
-                    .get();
-
-            putPlayItemToBoard(playItem, computerPlayItemId, PlayItemState.COMPUTER);
-        } */
-
-        tryToWin(PlayItemState.COMPUTER);
+        tryToWin();
 
         if (checkForWin(PlayItemState.COMPUTER)) {
             gameOver(PlayItemState.COMPUTER.name());
@@ -69,7 +56,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void putPlayItemToBoard(PlayItem playItem, int playItemImageId, PlayItemState playItemState) {
+    private void putPlayItemToBoard(PlayItem playItem, PlayItemState playItemState) {
+        int playItemImageId;
+
+        if (playItemState == PlayItemState.COMPUTER) {
+            playItemImageId = computerPlayItemId;
+        } else {
+            playItemImageId = userPlayItemId;
+        }
+
         GameService.addImage(playItem, playItemImageId);
         PlayItemPosition playItemPositionByPlayItem = GameService.getPlayItemPositionByPlayItem(playItem);
         playItem.setPlayItemPosition(playItemPositionByPlayItem);
@@ -180,29 +175,26 @@ public class MainActivity extends AppCompatActivity {
                 checkVertically(playItems, whichItem);
     }
 
-    private void tryToWin(PlayItemState playItemState) {
+    private void tryToWin() {
 
-        // count of play item positions of given type in all lines
-        long countPlayItemTypesInLine = playItems.stream()
-                .filter(playItem -> playItem.getPlayItemState() == playItemState && playItem.getPlayItemPosition().getRow() == 1)
-                .count();
+        for (int i = 0; i <= 3; i++) {
 
-        // count of empty positions in all lines
-        long countEmptyPositionsInLine = playItems.stream()
-                .filter(playItem -> playItem.getPlayItemPosition().getRow() == 1 && playItem.getPlayItemState() == PlayItemState.EMPTY)
-                .count();
+            final int j = i;
 
-        System.out.println("countPlayItemTypesInLine "+countPlayItemTypesInLine);
-        System.out.println("countEmptyPositionsInLine "+countEmptyPositionsInLine);
+            List<PlayItem> playItemsOfComputerLine = playItems.stream()
+                    .filter(playItem -> playItem.getPlayItemState() == PlayItemState.COMPUTER && playItem.getPlayItemPosition()
+                            .getRow() == j)
+                    .collect(Collectors.toList());
 
-        for (PlayItem playItem : playItems) {
-            if (playItem.getPlayItemPosition() != null) {
-                if (playItem.getPlayItemState() == playItemState) {
+            List<PlayItem> freePlayItemsInTheLine = playItems.stream()
+                    .filter(playItem -> playItem.getPlayItemPosition().getRow() == j && playItem.getPlayItemState() == PlayItemState.EMPTY)
+                    .collect(Collectors.toList());
 
-                }
+            if (3 - freePlayItemsInTheLine.size() - playItemsOfComputerLine.size() == 0) {
+                putPlayItemToBoard(freePlayItemsInTheLine.stream().findAny().get(), PlayItemState.COMPUTER);
+                return;
             }
         }
-
     }
 
     private void tryToPrevent(PlayItemState playItemState, PlayItemState opponentItemType) {
