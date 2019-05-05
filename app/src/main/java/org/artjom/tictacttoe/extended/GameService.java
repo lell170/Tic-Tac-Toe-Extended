@@ -88,4 +88,28 @@ public class GameService {
 
         return horizontallyAndVerticallyCheck;
     }
+
+    public static boolean checkDiagonally(List<PlayItem> playItems, PlayItemState playItemState) {
+        boolean diagonallyCheck = IntStream.rangeClosed(1, 3)
+                .boxed()
+                .allMatch(integer -> playItems.stream()
+                        .anyMatch(playItem -> {
+                            if (playItem.getPlayItemPosition() != null) {
+                                boolean fromLeft = playItem.getPlayItemPosition().getRow() == integer &&
+                                        playItem.getPlayItemPosition().getCol() == integer &&
+                                        playItem.getPlayItemState() == playItemState;
+
+                                boolean fromRight = playItem.getPlayItemPosition().getRow() == integer &&
+                                        playItem.getPlayItemPosition().getCol() == 4 - integer &&
+                                        playItem.getPlayItemState() == playItemState;
+
+                                if (fromLeft || fromRight) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }));
+        return diagonallyCheck;
+    }
 }
+

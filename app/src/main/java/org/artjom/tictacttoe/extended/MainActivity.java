@@ -71,32 +71,6 @@ public class MainActivity extends AppCompatActivity {
         playItem.setPlayItemState(playItemState);
     }
 
-    //TODO: some ugly methods.... :-(
-    private boolean checkDiagonalFromLeft(List<PlayItem> playItems, PlayItemState playItemState) {
-        return IntStream.rangeClosed(1, 3)
-                .boxed()
-                .allMatch(integer -> playItems.stream()
-                        .anyMatch(playItem -> {
-                            if (playItem.getPlayItemPosition() != null) {
-                                return playItem.getPlayItemPosition().getRow() == integer &&
-                                        playItem.getPlayItemPosition().getCol() == integer &&
-                                        playItem.getPlayItemState() == playItemState;
-                            } else return false;
-                        }));
-    }
-
-    private boolean checkDiagonalFromRight(List<PlayItem> playItems, PlayItemState playItemState) {
-        return IntStream.rangeClosed(1, 3).boxed()
-                .allMatch(integer -> playItems.stream()
-                        .anyMatch(playItem -> {
-                            if (playItem.getPlayItemPosition() != null) {
-                                return playItem.getPlayItemPosition().getRow() == integer &&
-                                        playItem.getPlayItemPosition().getCol() == (3 - integer + 1) &&
-                                        playItem.getPlayItemState() == playItemState;
-                            } else return false;
-                        }));
-    }
-
     private void gameOver(String whoHasWin) {
         TextView textView = findViewById(R.id.resultTextView);
         textView.setText(whoHasWin + " has won!!!");
@@ -129,10 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkForWin(PlayItemState playItemState) {
-
-        return checkDiagonalFromLeft(playItems, playItemState) ||
-                checkDiagonalFromRight(playItems, playItemState) ||
-                GameService.checkHorizontallyAndVertically(playItems, playItemState);
+        return GameService.checkDiagonally(playItems, playItemState) || GameService.checkHorizontallyAndVertically(playItems, playItemState);
     }
 
     private void tryToWin() {
