@@ -23,6 +23,7 @@ public class GameService {
         return imageViews;
     }
 
+    // TODO: activate it for simple play level
     public static PlayItemPosition getFreePlayItemPosition(List<PlayItem> playItems) {
         PlayItem playItemWithNoPosition = playItems.stream()
                 .filter(playItem -> playItem.getPlayItemPosition() == null).findAny().orElse(null);
@@ -33,6 +34,7 @@ public class GameService {
         return null;
     }
 
+    // TODO: activate it for simple play level
     public static PlayItemPosition getFreeRandomPlayItemPosition(List<PlayItem> playItems) {
         List<PlayItem> playItemsWithNoPosition = playItems.stream()
                 .filter(playItem -> playItem.getPlayItemPosition() == null).collect(Collectors.toList());
