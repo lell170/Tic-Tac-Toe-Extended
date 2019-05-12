@@ -8,67 +8,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 public class MainActivity extends AppCompatActivity {
 
-    private List<PlayItem> playItems;
+    private Board board = new Board();
 
-    private int userPlayItemId;
-    private int computerPlayItemId;
+    private Player forestMan;
+    private Player yeti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize Board
         ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
-        playItems = GameService.getAllImagesForViewGroup(playItemsLayout);
+        board.setPlayItems(PlayItemService.getAllImagesForViewGroup(playItemsLayout));
 
-        userPlayItemId = R.drawable.coffee_green;
-        computerPlayItemId = R.drawable.coffee_gray;
+        // initialize Players
+        forestMan = new Player("Forest Man", R.drawable.coffee_green);
+        yeti = new Player("Yeti", R.drawable.coffee_gray);
 
         // start positions will be initialized. Empty state and Positions based of current PlayItem case
-        this.initializeStartPositions();
+        board.clearBoard();
     }
 
-    public void playItemClick(View view) {
+    // handle event on click on play item
+    public void onPlayItemClick(View view) {
         PlayItem playItem = (PlayItem) view;
-        putPlayItemToBoard(playItem, PlayItemState.USER);
+        board.putPlayItemToBoard(playItem, forestMan);
 
-        if (checkForWin(PlayItemState.USER)) {
-            gameOver(PlayItemState.USER.name());
-            disableAllfields();
+        if (board.checkForWin(forestMan)) {
+            gameOver(forestMan.getName());
+            board.disableBoard();
         } else {
-            computerTurn();
+            PlayItem playItemForNextMove = PlayerService.getBestPossibleMove(yeti, board);
+            board.putPlayItemToBoard(playItemForNextMove, yeti);
         }
-    }
-
-    private void computerTurn() {
-
-        tryToWin();
-
-        if (checkForWin(PlayItemState.COMPUTER)) {
-            gameOver(PlayItemState.COMPUTER.name());
-            disableAllfields();
-        }
-    }
-
-    private void putPlayItemToBoard(PlayItem playItem, PlayItemState playItemState) {
-        int playItemImageId;
-
-        if (playItemState == PlayItemState.COMPUTER) {
-            playItemImageId = computerPlayItemId;
-        } else {
-            playItemImageId = userPlayItemId;
-        }
-
-        GameService.addImage(playItem, playItemImageId);
-        PlayItemPosition playItemPositionByPlayItem = GameService.getPlayItemPositionByPlayItem(playItem);
-        playItem.setPlayItemPosition(playItemPositionByPlayItem);
-        playItem.setPlayItemState(playItemState);
     }
 
     private void gameOver(String whoHasWin) {
@@ -91,52 +66,8 @@ public class MainActivity extends AppCompatActivity {
         animator.start();
     }
 
-    public void onClickReset(View view) {
+    public void onResetClick(View view) {
         finish();
         startActivity(getIntent());
     }
-
-    private void disableAllfields() {
-        for (PlayItem playItem : playItems) {
-            playItem.setEnabled(false);
-        }
-    }
-
-    private boolean checkForWin(PlayItemState playItemState) {
-        return GameService.checkDiagonally(playItems, playItemState) || GameService.checkHorizontallyAndVertically(playItems, playItemState);
-    }
-
-    private void tryToWin() {
-
-        for (int i = 0; i <= 3; i++) {
-
-            final int j = i;
-
-            List<PlayItem> playItemsOfComputerLine = playItems.stream()
-                    .filter(playItem -> playItem.getPlayItemState() == PlayItemState.COMPUTER && playItem.getPlayItemPosition()
-                            .getRow() == j)
-                    .collect(Collectors.toList());
-
-            List<PlayItem> freePlayItemsInTheLine = playItems.stream()
-                    .filter(playItem -> playItem.getPlayItemPosition().getRow() == j && playItem.getPlayItemState() == PlayItemState.EMPTY)
-                    .collect(Collectors.toList());
-
-            if (3 - freePlayItemsInTheLine.size() - playItemsOfComputerLine.size() == 0) {
-                putPlayItemToBoard(freePlayItemsInTheLine.stream().findAny().get(), PlayItemState.COMPUTER);
-                return;
-            }
-        }
-    }
-
-    private void tryToPrevent(PlayItemState playItemState, PlayItemState opponentItemType) {
-        //TODO: implement me:)
-    }
-
-    private void initializeStartPositions() {
-        for (PlayItem playItem : playItems) {
-            playItem.setPlayItemPosition(GameService.getPlayItemPositionByPlayItem(playItem));
-            playItem.setPlayItemState(PlayItemState.EMPTY);
-        }
-    }
-
 }

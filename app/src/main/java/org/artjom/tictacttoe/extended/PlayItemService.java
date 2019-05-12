@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class GameService {
+public class PlayItemService {
 
     // TODO: refactor this ugly method...
     public static List<PlayItem> getAllImagesForViewGroup(ViewGroup layout) {
@@ -57,39 +57,14 @@ public class GameService {
         return new PlayItemPosition(x, y);
     }
 
-    public static void addImage(ImageView playItem, int drawableImageId) {
-        playItem.setImageResource(drawableImageId);
+    public static boolean checkHorizontallyAndVertically(Board board, Player player) {
+        //TODO: implement me:)
+        return true;
     }
 
-    public static boolean checkHorizontallyAndVertically(List<PlayItem> playItems, PlayItemState playItemState) {
+    public static boolean checkDiagonally(Player player, Board board) {
+        List<PlayItem> playItems = board.getPlayItems();
 
-        boolean horizontallyAndVerticallyCheck =
-                IntStream.rangeClosed(1, 3).boxed()
-                        .anyMatch(outerIterationNumber -> IntStream.rangeClosed(1, 3).boxed()
-                                .allMatch(innerIterationNumber -> {
-                                    boolean horizontally = playItems.stream()
-                                            .anyMatch(playItem -> playItem.getPlayItemState() == playItemState && playItem
-                                                    .getPlayItemPosition().getRow() == outerIterationNumber && playItem
-                                                    .getPlayItemPosition()
-                                                    .getCol() == innerIterationNumber);
-
-                                    boolean vertically = playItems.stream()
-                                            .anyMatch(playItem -> playItem.getPlayItemState() == playItemState && playItem
-                                                    .getPlayItemPosition().getCol() == outerIterationNumber && playItem
-                                                    .getPlayItemPosition()
-                                                    .getRow() == innerIterationNumber);
-
-                                    if (horizontally || vertically) {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                }));
-
-        return horizontallyAndVerticallyCheck;
-    }
-
-    public static boolean checkDiagonally(List<PlayItem> playItems, PlayItemState playItemState) {
         boolean diagonallyCheck = IntStream.rangeClosed(1, 3)
                 .boxed()
                 .allMatch(integer -> playItems.stream()
@@ -97,11 +72,11 @@ public class GameService {
                             if (playItem.getPlayItemPosition() != null) {
                                 boolean fromLeft = playItem.getPlayItemPosition().getRow() == integer &&
                                         playItem.getPlayItemPosition().getCol() == integer &&
-                                        playItem.getPlayItemState() == playItemState;
+                                        playItem.getPlayer() == player;
 
                                 boolean fromRight = playItem.getPlayItemPosition().getRow() == integer &&
                                         playItem.getPlayItemPosition().getCol() == 4 - integer &&
-                                        playItem.getPlayItemState() == playItemState;
+                                        playItem.getPlayer() == player;
 
                                 if (fromLeft || fromRight) {
                                     return true;
