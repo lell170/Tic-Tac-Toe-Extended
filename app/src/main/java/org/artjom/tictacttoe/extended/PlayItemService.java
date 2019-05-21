@@ -3,10 +3,7 @@ package org.artjom.tictacttoe.extended;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -57,13 +54,40 @@ public class PlayItemService {
         return new PlayItemPosition(x, y);
     }
 
-    public static boolean checkHorizontallyAndVertically(Board board, Player player) {
-        //TODO: implement me:)
-        return true;
+    public static Optional<PlayItem> getPlayItemByPosition(List<PlayItem> playItems, int row, int col) {
+        Optional<PlayItem> optionalPlayItem = playItems.stream()
+                .filter(playItem -> playItem.getPlayItemPosition().getCol() == col && playItem.getPlayItemPosition().getRow() == row)
+                .findAny();
+
+        return optionalPlayItem;
     }
 
-    public static boolean checkDiagonally(Player player, Board board) {
+    public static boolean checkForWin(Player player, Board board) {
         List<PlayItem> playItems = board.getPlayItems();
+
+        boolean vertically = IntStream.rangeClosed(1, 3)
+                .boxed()
+                .anyMatch(colNr -> IntStream.rangeClosed(1, 3).allMatch(rowNr -> {
+                    Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
+                    if (playItemByPosition.isPresent()) {
+                        if (playItemByPosition.get().getPlayer() == player) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }));
+
+        boolean horizontally = IntStream.rangeClosed(1, 3)
+                .boxed()
+                .anyMatch(rowNr -> IntStream.rangeClosed(1, 3).allMatch(colNr -> {
+                    Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
+                    if (playItemByPosition.isPresent()) {
+                        if (playItemByPosition.get().getPlayer() == player) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }));
 
         boolean diagonallyCheck = IntStream.rangeClosed(1, 3)
                 .boxed()
@@ -84,7 +108,8 @@ public class PlayItemService {
                             }
                             return false;
                         }));
-        return diagonallyCheck;
+
+        return horizontally || vertically || diagonallyCheck;
     }
 }
 
