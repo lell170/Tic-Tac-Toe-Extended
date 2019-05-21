@@ -36,13 +36,17 @@ public class MainActivity extends AppCompatActivity {
     public void onPlayItemClick(View view) {
         PlayItem playItem = (PlayItem) view;
         board.putPlayItemToBoard(playItem, forestMan);
-
-        if (board.checkForWin(forestMan)) {
+        //TODO: redundant code...
+        if (PlayItemService.checkForWin(forestMan, board)) {
             gameOver(forestMan.getName());
             board.disableBoard();
         } else {
             PlayItem playItemForNextMove = PlayerService.getBestPossibleMove(yeti, board);
             board.putPlayItemToBoard(playItemForNextMove, yeti);
+            if (PlayItemService.checkForWin(yeti, board)) {
+                gameOver(yeti.getName());
+                board.disableBoard();
+            }
         }
     }
 

@@ -27,7 +27,6 @@ public class Board {
         this.playItems = playItems;
     }
 
-
     public void putPlayItemToBoard(PlayItem playItem, Player player) {
         playItem.setImageResource(player.getImageId());
 
@@ -35,9 +34,4 @@ public class Board {
         playItem.setPlayItemPosition(playItemPositionByPlayItem);
         playItem.setPlayer(player);
     }
-
-    public boolean checkForWin(Player player) {
-        return PlayItemService.checkDiagonally(player, this);
-    }
-
 }
