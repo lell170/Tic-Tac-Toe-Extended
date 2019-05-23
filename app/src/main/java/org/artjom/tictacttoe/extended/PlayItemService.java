@@ -62,7 +62,8 @@ public class PlayItemService {
         return optionalPlayItem;
     }
 
-    public static boolean checkForWin(Player player, Board board) {
+    //TODO: Bug!
+    public static void checkForWin(Player player, Board board, MainActivity mainActivity) {
         List<PlayItem> playItems = board.getPlayItems();
 
         boolean vertically = IntStream.rangeClosed(1, 3)
@@ -102,14 +103,15 @@ public class PlayItemService {
                                         playItem.getPlayItemPosition().getCol() == 4 - integer &&
                                         playItem.getPlayer() == player;
 
-                                if (fromLeft || fromRight) {
-                                    return true;
-                                }
+                                return fromLeft || fromRight;
+
                             }
                             return false;
                         }));
 
-        return horizontally || vertically || diagonallyCheck;
+        if (horizontally || vertically || diagonallyCheck) {
+            mainActivity.gameOver(player.getName());
+        }
     }
 }
 

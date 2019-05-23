@@ -15,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
     private Player forestMan;
     private Player yeti;
 
+    public final static String YETI_NAME = "Yeti";
+    public final static String FOREST_MAN_NAME = "Forest Man";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         board.setPlayItems(PlayItemService.getAllImagesForViewGroup(playItemsLayout));
 
         // initialize Players
-        forestMan = new Player("Forest Man", R.drawable.coffee_green);
-        yeti = new Player("Yeti", R.drawable.coffee_gray);
+        forestMan = new Player(FOREST_MAN_NAME, R.drawable.coffee_green);
+        yeti = new Player(YETI_NAME, R.drawable.coffee_gray);
 
         // start positions will be initialized. Empty state and Positions based of current PlayItem case
         board.clearBoard();
@@ -34,25 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
     // handle event on click on play item
     public void onPlayItemClick(View view) {
-        PlayItem playItem = (PlayItem) view;
-        board.putPlayItemToBoard(playItem, forestMan);
-        //TODO: redundant code...
-        if (PlayItemService.checkForWin(forestMan, board)) {
-            gameOver(forestMan.getName());
-            board.disableBoard();
-        } else {
-            PlayItem playItemForNextMove = PlayerService.getBestPossibleMove(yeti, board);
-            board.putPlayItemToBoard(playItemForNextMove, yeti);
-            if (PlayItemService.checkForWin(yeti, board)) {
-                gameOver(yeti.getName());
-                board.disableBoard();
-            }
-        }
+        // first user try to make move
+        board.makeMove(forestMan, view, this);
+        // second move is from yeti (computer)
+        board.makeMove(yeti, view, this);
     }
 
-    private void gameOver(String whoHasWin) {
+    public void gameOver(String winner) {
+        board.disableBoard();
+
         TextView textView = findViewById(R.id.resultTextView);
-        textView.setText(whoHasWin + " has won!!!");
+        textView.setText(winner + " has won!!!");
 
         final float startSize = 42; // Size in pixels
         final float endSize = 12;
