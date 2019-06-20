@@ -36,7 +36,7 @@ public class Board {
         this.playItems = playItems;
     }
 
-    public void putPlayItemToBoard(PlayItem playItem, Player player) {
+    private void putPlayItemToBoard(PlayItem playItem, Player player) {
         playItem.setImageResource(player.getImageId());
 
         PlayItemPosition playItemPositionByPlayItem = PlayItemService.getPlayItemPositionByPlayItem(playItem);
@@ -44,11 +44,11 @@ public class Board {
         playItem.setPlayer(player);
     }
 
-    public boolean isDisabled() {
+    private boolean isDisabled() {
         return disabled;
     }
 
-    public void setDisabled(boolean disabled) {
+    private void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
 

@@ -11,7 +11,6 @@ import java.util.stream.IntStream;
 
 public class PlayItemService {
 
-    // TODO: refactor this ugly method...
     public static List<PlayItem> getAllImagesForViewGroup(ViewGroup layout) {
         List<PlayItem> imageViews = new ArrayList<>();
         int childCount = layout.getChildCount();
@@ -21,30 +20,6 @@ public class PlayItemService {
             }
         }
         return imageViews;
-    }
-
-    // TODO: activate it for simple play level
-    public static PlayItemPosition getFreePlayItemPosition(List<PlayItem> playItems) {
-        PlayItem playItemWithNoPosition = playItems.stream()
-                .filter(playItem -> playItem.getPlayItemPosition() == null).findAny().orElse(null);
-
-        if (playItemWithNoPosition != null) {
-            return getPlayItemPositionByPlayItem(playItemWithNoPosition);
-        }
-        return null;
-    }
-
-    // TODO: activate it for simple play level
-    public static PlayItemPosition getFreeRandomPlayItemPosition(List<PlayItem> playItems) {
-        List<PlayItem> playItemsWithNoPosition = playItems.stream()
-                .filter(playItem -> playItem.getPlayItemPosition() == null).collect(Collectors.toList());
-
-        if (!playItemsWithNoPosition.isEmpty()) {
-            return getPlayItemPositionByPlayItem(Objects.requireNonNull(playItemsWithNoPosition.stream()
-                    .skip(new Random().nextInt(playItemsWithNoPosition.size()))
-                    .findFirst().orElse(null)));
-        }
-        return null;
     }
 
     public static PlayItemPosition getPlayItemPositionByPlayItem(PlayItem playItem) {

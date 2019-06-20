@@ -43,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
         // first user try to make move
         board.makeMove(forestMan, view, this);
         // second move is from yeti (computer)
-        board.makeMove(yeti, view, this);
+        if(board.getPlayItems().stream().allMatch(playItem -> playItem.getPlayer()!=null)) {
+            gameOver("nobody");
+        }
+        else {
+            board.makeMove(yeti, view, this);
+        }
     }
 
     public void gameOver(String winner) {
