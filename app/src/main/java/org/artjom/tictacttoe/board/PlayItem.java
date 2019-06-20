@@ -1,14 +1,15 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe.board;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import org.artjom.tictacttoe.player.Player;
 
 public class PlayItem extends AppCompatImageView {
 
     private PlayItemPosition playItemPosition;
 
-    private PlayItemState playItemState;
+    private Player player;
 
     public PlayItem(Context context) {
         super(context);
@@ -30,11 +31,19 @@ public class PlayItem extends AppCompatImageView {
         this.playItemPosition = playItemPosition;
     }
 
-    public PlayItemState getPlayItemState() {
-        return playItemState;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setPlayItemState(PlayItemState playItemState) {
-        this.playItemState = playItemState;
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayItem{" +
+                "playItemPosition=" + playItemPosition +
+                ", player=" + player +
+                '}';
     }
 }

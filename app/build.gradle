@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "org.artjom.tictacttoe.extended"
+        applicationId "org.artjom.tictacttoe"
         minSdkVersion 27
         targetSdkVersion 28
         versionCode 1

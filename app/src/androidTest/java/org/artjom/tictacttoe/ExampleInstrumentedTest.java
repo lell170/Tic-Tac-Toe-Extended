@@ -1,4 +1,4 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("org.artjom.tictacttoe.extended", appContext.getPackageName());
+        assertEquals("org.artjom.tictacttoe", appContext.getPackageName());
     }
 }

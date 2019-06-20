@@ -1,4 +1,4 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe.board;
 
 import java.util.Objects;
 

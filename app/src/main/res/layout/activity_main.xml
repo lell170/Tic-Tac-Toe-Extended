@@ -20,27 +20,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline">
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem2"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x1y2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.485"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/playItem3" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem5"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x2y2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.485"
@@ -61,21 +61,21 @@
             app:layout_constraintStart_toEndOf="@+id/playItem5"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem7"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x3y1"
             app:layout_constraintBottom_toBottomOf="@+id/playItem8"
             app:layout_constraintEnd_toStartOf="@+id/playItem8"
             app:layout_constraintTop_toBottomOf="@+id/playItem4"
             app:layout_constraintVertical_bias="0.0" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem8"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -83,7 +83,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x3y2"
             app:layout_constraintBottom_toBottomOf="@+id/playItem9"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,13 +92,13 @@
             app:layout_constraintTop_toBottomOf="@+id/playItem5"
             app:layout_constraintVertical_bias="0.0" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem4"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x2y1"
             app:layout_constraintEnd_toStartOf="@+id/playItem5"
             app:layout_constraintTop_toBottomOf="@+id/playItem1" />
@@ -117,13 +117,13 @@
             app:layout_constraintStart_toEndOf="@+id/playItem4"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem6"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x2y3"
             app:layout_constraintStart_toEndOf="@+id/playItem5"
             app:layout_constraintTop_toBottomOf="@+id/playItem3" />
@@ -142,13 +142,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/playItem2" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem3"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x1y3"
             app:layout_constraintStart_toEndOf="@+id/playItem2"
             app:layout_constraintTop_toTopOf="parent" />
@@ -167,23 +167,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/playItem4"/>
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem1"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginEnd="16dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x1y1"
             app:layout_constraintEnd_toStartOf="@+id/playItem2"
             app:layout_constraintTop_toTopOf="@+id/playItem2" />
 
-        <org.artjom.tictacttoe.extended.PlayItem
+        <org.artjom.tictacttoe.board.PlayItem
             android:id="@+id/playItem9"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:onClick="playItemClick"
+            android:onClick="onPlayItemClick"
             android:tag="x3y3"
             app:layout_constraintStart_toEndOf="@+id/playItem8"
             app:layout_constraintTop_toBottomOf="@+id/playItem6" />
@@ -208,7 +208,7 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:onClick="onClickReset" android:textColorLink="@color/colorPrimaryDark"/>
+            app:layout_constraintTop_toTopOf="parent" android:onClick="onResetClick" android:textColorLink="@color/colorPrimaryDark"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
