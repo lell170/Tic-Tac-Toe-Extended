@@ -62,23 +62,62 @@ public class PlayItemService {
         return optionalPlayItem;
     }
 
-    //TODO: Bug!
     public static void checkForWin(Player player, Board board, MainActivity mainActivity) {
         List<PlayItem> playItems = board.getPlayItems();
 
-        boolean vertically = IntStream.rangeClosed(1, 3)
-                .boxed()
-                .anyMatch(colNr -> IntStream.rangeClosed(1, 3).allMatch(rowNr -> {
-                    Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
-                    if (playItemByPosition.isPresent()) {
-                        if (playItemByPosition.get().getPlayer() == player) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }));
+        if (isVertically(player, playItems)) {
+            mainActivity.gameOver(player.getName());
+            System.out.println("win vertically");
+            return;
+        }
 
-        boolean horizontally = IntStream.rangeClosed(1, 3)
+        if (isHorizontally(player, playItems)) {
+            mainActivity.gameOver(player.getName());
+            System.out.println("win horizontally");
+            return;
+        }
+
+        if (isDiagonallyCheck(player, playItems)) {
+            mainActivity.gameOver(player.getName());
+            System.out.println("win diagonally");
+            return;
+        }
+    }
+
+    private static boolean isDiagonallyCheck(Player player, List<PlayItem> playItems) {
+        boolean fromLeft = IntStream.rangeClosed(1, 3)
+                .boxed()
+                .allMatch(integer -> playItems.stream()
+                        .anyMatch(playItem -> {
+                            if (playItem.getPlayItemPosition() != null) {
+                                return playItem.getPlayItemPosition().getRow() == integer &&
+                                        playItem.getPlayItemPosition().getCol() == integer &&
+                                        playItem.getPlayer() == player;
+
+
+                            }
+                            return false;
+                        }));
+
+        boolean fromRight = IntStream.rangeClosed(1, 3)
+                .boxed()
+                .allMatch(integer -> playItems.stream()
+                        .anyMatch(playItem -> {
+                            if (playItem.getPlayItemPosition() != null) {
+
+                                return playItem.getPlayItemPosition().getRow() == integer &&
+                                        playItem.getPlayItemPosition().getCol() == 4 - integer &&
+                                        playItem.getPlayer() == player;
+
+                            }
+                            return false;
+                        }));
+
+        return fromRight || fromLeft;
+    }
+
+    private static boolean isHorizontally(Player player, List<PlayItem> playItems) {
+        return IntStream.rangeClosed(1, 3)
                 .boxed()
                 .anyMatch(rowNr -> IntStream.rangeClosed(1, 3).allMatch(colNr -> {
                     Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
@@ -89,29 +128,20 @@ public class PlayItemService {
                     }
                     return false;
                 }));
+    }
 
-        boolean diagonallyCheck = IntStream.rangeClosed(1, 3)
+    private static boolean isVertically(Player player, List<PlayItem> playItems) {
+        return IntStream.rangeClosed(1, 3)
                 .boxed()
-                .allMatch(integer -> playItems.stream()
-                        .anyMatch(playItem -> {
-                            if (playItem.getPlayItemPosition() != null) {
-                                boolean fromLeft = playItem.getPlayItemPosition().getRow() == integer &&
-                                        playItem.getPlayItemPosition().getCol() == integer &&
-                                        playItem.getPlayer() == player;
-
-                                boolean fromRight = playItem.getPlayItemPosition().getRow() == integer &&
-                                        playItem.getPlayItemPosition().getCol() == 4 - integer &&
-                                        playItem.getPlayer() == player;
-
-                                return fromLeft || fromRight;
-
-                            }
-                            return false;
-                        }));
-
-        if (horizontally || vertically || diagonallyCheck) {
-            mainActivity.gameOver(player.getName());
-        }
+                .anyMatch(colNr -> IntStream.rangeClosed(1, 3).allMatch(rowNr -> {
+                    Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
+                    if (playItemByPosition.isPresent()) {
+                        if (playItemByPosition.get().getPlayer() == player) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }));
     }
 }
 
