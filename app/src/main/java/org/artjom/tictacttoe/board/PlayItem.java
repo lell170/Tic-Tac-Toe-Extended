@@ -1,8 +1,9 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe.board;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import org.artjom.tictacttoe.player.Player;
 
 public class PlayItem extends AppCompatImageView {
 

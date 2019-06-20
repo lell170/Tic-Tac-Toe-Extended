@@ -1,4 +1,7 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe.player;
+
+import org.artjom.tictacttoe.board.PlayItem;
+import org.artjom.tictacttoe.board.Board;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,9 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe.board;
 
 import android.view.View;
+import org.artjom.tictacttoe.*;
+import org.artjom.tictacttoe.player.Player;
+import org.artjom.tictacttoe.player.PlayerService;
 
 import java.util.List;
 

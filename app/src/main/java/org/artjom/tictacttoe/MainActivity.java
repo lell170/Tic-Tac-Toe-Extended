@@ -1,4 +1,4 @@
-package org.artjom.tictacttoe.extended;
+package org.artjom.tictacttoe;
 
 import android.animation.ValueAnimator;
 import android.graphics.Typeface;
@@ -7,6 +7,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import org.artjom.tictacttoe.board.Board;
+import org.artjom.tictacttoe.board.PlayItemService;
+import org.artjom.tictacttoe.player.Player;
 
 public class MainActivity extends AppCompatActivity {
 
