@@ -8,18 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import org.artjom.tictacttoe.board.Board;
-import org.artjom.tictacttoe.board.PlayItemService;
 import org.artjom.tictacttoe.player.Player;
 
 public class MainActivity extends AppCompatActivity {
 
     private Board board = new Board();
 
-    private Player forestMan;
-    private Player yeti;
+    private Player greenCup;
+    private Player grayCup;
 
-    public final static String YETI_NAME = "Yeti";
-    public final static String FOREST_MAN_NAME = "Forest Man";
+    public final static String GREEN_CUP = "Green cup";
+    public final static String GRAY_CUP = "Gray cup";
+    public final static String NOBODY = "Nobody";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize Board
         ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
-        board.setPlayItems(PlayItemService.getAllImagesForViewGroup(playItemsLayout));
+        board.setPlayItems(board.extractAllImagesAsPlayItems(playItemsLayout));
 
         // initialize Players
-        forestMan = new Player(FOREST_MAN_NAME, R.drawable.coffee_green);
-        yeti = new Player(YETI_NAME, R.drawable.coffee_gray);
+        greenCup = new Player(GREEN_CUP, R.drawable.coffee_green);
+        grayCup = new Player(GRAY_CUP, R.drawable.coffee_gray);
 
         // start positions will be initialized. Empty state and Positions based of current PlayItem case
         board.clearBoard();
@@ -41,19 +41,19 @@ public class MainActivity extends AppCompatActivity {
     // handle event on click on play item
     public void onPlayItemClick(View view) {
         // first user try to make move
-        board.makeMove(forestMan, view, this);
-        // second move is from yeti (computer)
-        if(board.getPlayItems().stream().allMatch(playItem -> playItem.getPlayer()!=null)) {
-            gameOver("nobody");
-        }
-        else {
-            board.makeMove(yeti, view, this);
+        board.makeMove(greenCup, view, this);
+        // second move from grayCup (computer)
+        if (board.getPlayItems().stream().allMatch(playItem -> playItem.getPlayer() != null)) {
+            gameOver(NOBODY);
+        } else {
+            board.makeMove(grayCup, view, this);
         }
     }
 
     public void gameOver(String winner) {
         board.disableBoard();
 
+        //TODO: optimize win message
         TextView textView = findViewById(R.id.resultTextView);
         textView.setText(winner + " has won!!!");
 

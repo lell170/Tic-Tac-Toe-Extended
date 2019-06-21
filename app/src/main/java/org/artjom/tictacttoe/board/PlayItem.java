@@ -39,11 +39,4 @@ public class PlayItem extends AppCompatImageView {
         this.player = player;
     }
 
-    @Override
-    public String toString() {
-        return "PlayItem{" +
-                "playItemPosition=" + playItemPosition +
-                ", player=" + player +
-                '}';
-    }
 }
