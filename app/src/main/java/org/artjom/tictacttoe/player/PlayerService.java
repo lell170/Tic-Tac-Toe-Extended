@@ -9,48 +9,42 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PlayerService {
 
-    public static PlayItem getBestPossibleMove(Player player, Board board) {
-
-        // first check if player can win
-        Optional<PlayItem> canYetiWinWithThisItem = getWinMoveIfPossible(MainActivity.YETI_NAME, board);
-        if (canYetiWinWithThisItem.isPresent()) {
-            return canYetiWinWithThisItem.get();
+    public static PlayItem getBestPossibleMove(Board board) {
+        // first check if gray cup (computer) can win next step
+        Optional<PlayItem> canGrayCupWin = getWinMoveIfPossible(MainActivity.GRAY_CUP, board);
+        if (canGrayCupWin.isPresent()) {
+            return canGrayCupWin.get();
         }
 
-        // then check if forest man can win and if true - prevent him
-        Optional<PlayItem> canForestManWinWithThisItem = getWinMoveIfPossible(MainActivity.FOREST_MAN_NAME, board);
-        if (canForestManWinWithThisItem.isPresent()) {
-            return canForestManWinWithThisItem.get();
-        }
-
-        // or els random move
-        return getRandomMove(board);
-
+        // then check if green cup can win and if yes, prevent him or else make random move
+        Optional<PlayItem> canGreeCupWin = getWinMoveIfPossible(MainActivity.GREEN_CUP, board);
+        return canGreeCupWin.orElseGet(() -> getRandomMove(board));
     }
 
     private static Optional<PlayItem> getWinMoveIfPossible(String playerName, Board board) {
         // try to find horizontally win position
-        Optional<PlayItem> freeItemsInLine = findHorizontallyWinPosition(playerName, board);
-        if (freeItemsInLine.isPresent()) {
-            return freeItemsInLine;
+        Optional<PlayItem> winPositionHorizontally = findHorizontallyWinPosition(playerName, board);
+        if (winPositionHorizontally.isPresent()) {
+            return winPositionHorizontally;
         }
 
-        Optional<PlayItem> freeItemsInColumn = findVerticallyWinPosition(playerName, board);
-        if (freeItemsInColumn.isPresent()) {
-            return freeItemsInColumn;
+        Optional<PlayItem> winPositionVertically = findVerticallyWinPosition(playerName, board);
+        if (winPositionVertically.isPresent()) {
+            return winPositionVertically;
         }
 
-        Optional<PlayItem> freeItemDiagonallyFromLeft = findDiagonallyWinPositionFromLeft(playerName, board);
-        if (freeItemDiagonallyFromLeft.isPresent()) {
-            return freeItemDiagonallyFromLeft;
+        Optional<PlayItem> winPositionDiagonallyLeft = findDiagonallyWinPositionFromLeft(playerName, board);
+        if (winPositionDiagonallyLeft.isPresent()) {
+            return winPositionDiagonallyLeft;
         }
 
-        Optional<PlayItem> freeItemDiagonallyFromRight = findDiagonallyWinPositionFromRight(playerName, board);
-        if (freeItemDiagonallyFromRight.isPresent()) {
-            return freeItemDiagonallyFromRight;
+        Optional<PlayItem> winPositionDiagonallyRight = findDiagonallyWinPositionFromRight(playerName, board);
+        if (winPositionDiagonallyRight.isPresent()) {
+            return winPositionDiagonallyRight;
         }
         return Optional.empty();
     }
@@ -160,6 +154,5 @@ public class PlayerService {
 
         Random rand = new Random();
         return playItemsWithNoPosition.get(rand.nextInt(playItemsWithNoPosition.size()));
-
     }
 }

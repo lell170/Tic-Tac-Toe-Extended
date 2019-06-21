@@ -29,14 +29,6 @@ public class PlayItemPosition {
     }
 
     @Override
-    public String toString() {
-        return "PlayItemPosition{" +
-                "row=" + row +
-                ", col=" + col +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
