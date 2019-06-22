@@ -1,7 +1,9 @@
 package org.artjom.tictacttoe.board;
 
+import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.*;
 import android.widget.ImageView;
 import org.artjom.tictacttoe.MainActivity;
 import org.artjom.tictacttoe.player.Player;
@@ -91,6 +93,8 @@ public class Board {
     }
 
     private boolean isDiagonallyWin(Player player, List<PlayItem> playItems) {
+        List<PlayItem> winnerPlayItems = new ArrayList<>();
+
         boolean fromLeft = IntStream.rangeClosed(1, 3)
                 .boxed()
                 .allMatch(integer -> playItems.stream()
@@ -99,8 +103,6 @@ public class Board {
                                 return playItem.getPlayItemPosition().getRow() == integer &&
                                         playItem.getPlayItemPosition().getCol() == integer &&
                                         playItem.getPlayer() == player;
-
-
                             }
                             return false;
                         }));
@@ -119,25 +121,61 @@ public class Board {
                             return false;
                         }));
 
-        return fromRight || fromLeft;
+        if (fromLeft) {
+            for (int i = 1; i <= 3; i++) {
+                winnerPlayItems.add(getPlayItemByPosition(playItems, i, i).get());
+            }
+            animateWinnerPlayItems(winnerPlayItems);
+            return true;
+        } else if (fromRight) {
+            for (int i = 1; i <= 3; i++) {
+                winnerPlayItems.add(getPlayItemByPosition(playItems, i, 4 - i).get());
+            }
+            animateWinnerPlayItems(winnerPlayItems);
+            return true;
+        }
+
+        return false;
     }
 
     private boolean isHorizontallyWin(Player player, List<PlayItem> playItems) {
-        return IntStream.rangeClosed(1, 3)
+        List<PlayItem> winnerPlayItems = new ArrayList<>();
+
+        boolean win = IntStream.rangeClosed(1, 3)
                 .boxed()
                 .anyMatch(rowNr -> IntStream.rangeClosed(1, 3).allMatch(colNr -> {
                     Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
-                    return playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
+                    boolean present = playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
+                    if (present) {
+                        winnerPlayItems.add(playItemByPosition.get());
+                    }
+                    return present;
                 }));
+
+        if (win) {
+            this.animateWinnerPlayItems(winnerPlayItems);
+        }
+        return win;
     }
 
     private boolean isVerticallyWin(Player player, List<PlayItem> playItems) {
-        return IntStream.rangeClosed(1, 3)
+        List<PlayItem> winnerPlayItems = new ArrayList<>();
+
+        boolean win = IntStream.rangeClosed(1, 3)
                 .boxed()
                 .anyMatch(colNr -> IntStream.rangeClosed(1, 3).allMatch(rowNr -> {
                     Optional<PlayItem> playItemByPosition = getPlayItemByPosition(playItems, rowNr, colNr);
-                    return playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
+                    boolean present = playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
+                    if (present) {
+                        winnerPlayItems.add(playItemByPosition.get());
+                    }
+                    return present;
                 }));
+
+        if (win) {
+            this.animateWinnerPlayItems(winnerPlayItems);
+        }
+        return win;
     }
 
     public List<PlayItem> extractAllImagesAsPlayItems(ViewGroup layout) {
@@ -165,5 +203,17 @@ public class Board {
         return playItems.stream()
                 .filter(playItem -> playItem.getPlayItemPosition().getCol() == col && playItem.getPlayItemPosition().getRow() == row)
                 .findAny();
+    }
+
+    private void animateWinnerPlayItems(List<PlayItem> winnerPlayItems) {
+        winnerPlayItems.forEach(playItem -> {
+            AlphaAnimation animation = new AlphaAnimation(0.1f, 1.5f);
+            animation.setDuration(1000);
+            animation.setStartOffset(4000);
+            animation.willChangeBounds();
+            animation.setFillAfter(false);
+            playItem.startAnimation(animation);
+
+        });
     }
 }
