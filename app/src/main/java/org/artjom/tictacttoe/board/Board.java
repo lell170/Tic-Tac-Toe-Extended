@@ -3,7 +3,7 @@ package org.artjom.tictacttoe.board;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import org.artjom.tictacttoe.*;
+import org.artjom.tictacttoe.MainActivity;
 import org.artjom.tictacttoe.player.Player;
 import org.artjom.tictacttoe.player.PlayerService;
 
@@ -51,6 +51,9 @@ public class Board {
 
     private void putPlayItemToBoard(PlayItem playItem, Player player) {
         playItem.setImageResource(player.getImageId());
+
+        playItem.setTranslationY(-1000);
+        playItem.animate().translationYBy(1000).setDuration(500);
 
         PlayItemPosition playItemPositionByPlayItem = getPlayItemPositionByPlayItem(playItem);
         playItem.setPlayItemPosition(playItemPositionByPlayItem);
