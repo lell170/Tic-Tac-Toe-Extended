@@ -1,9 +1,8 @@
 package org.artjom.tictacttoe.board;
 
-import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.*;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import org.artjom.tictacttoe.MainActivity;
 import org.artjom.tictacttoe.player.Player;
