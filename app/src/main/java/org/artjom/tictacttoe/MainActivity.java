@@ -1,12 +1,11 @@
 package org.artjom.tictacttoe;
 
-import android.animation.ValueAnimator;
-import android.graphics.Typeface;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 import org.artjom.tictacttoe.board.Board;
 import org.artjom.tictacttoe.player.Player;
 
@@ -52,25 +51,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void gameOver(String winner) {
         board.disableBoard();
+        final String resultText;
 
-        //TODO: optimize win message
-        TextView textView = findViewById(R.id.resultTextView);
-        textView.setText(winner + " has won!!!");
+        if (winner.equals(NOBODY)) {
+            resultText = "Draw game 1:1";
+        } else {
+            resultText = winner + " win";
+        }
 
-        final float startSize = 42; // Size in pixels
-        final float endSize = 12;
-        long animationDuration = 600; // Animation duration in ms
-
-        ValueAnimator animator = ValueAnimator.ofFloat(startSize, endSize);
-        animator.setDuration(animationDuration);
-
-        animator.addUpdateListener(valueAnimator -> {
-            float animatedValue = (float) valueAnimator.getAnimatedValue();
-            textView.setTextSize(animatedValue);
-            textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        });
-
-        animator.start();
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, resultText, duration);
+        toast.show();
     }
 
     public void onResetClick(View view) {
