@@ -1,4 +1,4 @@
-package org.artjom.tictacttoe.board;
+package org.artjom.tictacttoe.playitem;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
