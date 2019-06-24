@@ -4,10 +4,7 @@ import org.artjom.tictacttoe.MainActivity;
 import org.artjom.tictacttoe.board.Board;
 import org.artjom.tictacttoe.playitem.PlayItem;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlayerService {
@@ -20,31 +17,30 @@ public class PlayerService {
         }
 
         // then check if green cup can win and if yes, prevent him or else make random move
-        Optional<PlayItem> canGreeCupWin = getWinMoveIfPossible(MainActivity.GREEN_CUP, board);
-        return canGreeCupWin.orElseGet(() -> getRandomMove(board));
+        Optional<PlayItem> canGreenCup = getWinMoveIfPossible(MainActivity.GREEN_CUP, board);
+        return canGreenCup.orElseGet(() -> getRandomMove(board));
     }
 
     private static Optional<PlayItem> getWinMoveIfPossible(String playerName, Board board) {
-        // try to find horizontally win position
-        Optional<PlayItem> winPositionHorizontally = findHorizontallyWinPosition(playerName, board);
-        if (winPositionHorizontally.isPresent()) {
-            return winPositionHorizontally;
+        // try to find best win position
+
+        List<WinPosition> winPositionMethods = new ArrayList<>();
+
+        winPositionMethods.add(() -> findHorizontallyWinPosition(playerName, board));
+        winPositionMethods.add(() -> findVerticallyWinPosition(playerName, board));
+        winPositionMethods.add(() -> findDiagonallyWinPositionFromLeft(playerName, board));
+        winPositionMethods.add(() -> findDiagonallyWinPositionFromRight(playerName, board));
+
+        Collections.shuffle(winPositionMethods);
+
+        Optional<WinPosition> anyWinPosition = winPositionMethods
+                .stream().filter(winPosition -> winPosition.getWinPosition().isPresent())
+                .findAny();
+
+        if (anyWinPosition.isPresent()) {
+            return anyWinPosition.get().getWinPosition();
         }
 
-        Optional<PlayItem> winPositionVertically = findVerticallyWinPosition(playerName, board);
-        if (winPositionVertically.isPresent()) {
-            return winPositionVertically;
-        }
-
-        Optional<PlayItem> winPositionDiagonallyLeft = findDiagonallyWinPositionFromLeft(playerName, board);
-        if (winPositionDiagonallyLeft.isPresent()) {
-            return winPositionDiagonallyLeft;
-        }
-
-        Optional<PlayItem> winPositionDiagonallyRight = findDiagonallyWinPositionFromRight(playerName, board);
-        if (winPositionDiagonallyRight.isPresent()) {
-            return winPositionDiagonallyRight;
-        }
         return Optional.empty();
     }
 
