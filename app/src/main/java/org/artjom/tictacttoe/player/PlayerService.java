@@ -1,15 +1,14 @@
 package org.artjom.tictacttoe.player;
 
 import org.artjom.tictacttoe.MainActivity;
-import org.artjom.tictacttoe.board.PlayItem;
 import org.artjom.tictacttoe.board.Board;
+import org.artjom.tictacttoe.playitem.PlayItem;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class PlayerService {
 
@@ -64,7 +63,7 @@ public class PlayerService {
                     .collect(Collectors.toList());
 
             if (playerItemsInColumn.size() == 2 && freeItemsInColumn.size() == 1) {
-                return freeItemsInColumn.stream().findAny();
+                return Optional.ofNullable(freeItemsInColumn.get(0));
             }
         }
         return Optional.empty();
@@ -85,7 +84,7 @@ public class PlayerService {
                     .collect(Collectors.toList());
 
             if (playerItemsInLine.size() == 2 && freeItemsInLine.size() == 1) {
-                return freeItemsInLine.stream().findAny();
+                return Optional.ofNullable(freeItemsInLine.get(0));
             }
         }
         return Optional.empty();
@@ -97,23 +96,23 @@ public class PlayerService {
 
         for (int i = 0; i <= 3; i++) {
             final int index = i;
-            Optional<PlayItem> any = board.getPlayItems().stream()
+            Optional<PlayItem> anyFreePlayItem = board.getPlayItems().stream()
                     .filter(playItem -> playItem.getPlayItemPosition().getCol() == index && playItem.getPlayItemPosition()
                             .getRow() == index && playItem.getPlayer() == null).findAny();
-            any.ifPresent(freeItemsFromLeft::add);
+            anyFreePlayItem.ifPresent(freeItemsFromLeft::add);
         }
 
         for (int i = 0; i <= 3; i++) {
             final int index = i;
-            Optional<PlayItem> any = board.getPlayItems().stream()
+            Optional<PlayItem> anyPlayerPlayItem = board.getPlayItems().stream()
                     .filter(playItem -> playItem.getPlayer() != null && playItem.getPlayItemPosition().getCol() == index && playItem
                             .getPlayItemPosition()
                             .getRow() == index && playItem.getPlayer().getName().equals(playerName)).findAny();
-            any.ifPresent(playerItemsFromLeft::add);
+            anyPlayerPlayItem.ifPresent(playerItemsFromLeft::add);
         }
 
         if (playerItemsFromLeft.size() == 2 && freeItemsFromLeft.size() == 1) {
-            return freeItemsFromLeft.stream().findAny();
+            return Optional.ofNullable(freeItemsFromLeft.get(0));
         }
 
         return Optional.empty();
@@ -125,34 +124,34 @@ public class PlayerService {
 
         for (int i = 1; i <= 3; i++) {
             final int index = i;
-            Optional<PlayItem> any = board.getPlayItems().stream()
+            Optional<PlayItem> anyFreePlayItem = board.getPlayItems().stream()
                     .filter(playItem -> playItem.getPlayItemPosition().getCol() == index && playItem.getPlayItemPosition()
                             .getRow() == (4 - index) && playItem.getPlayer() == null).findAny();
-            any.ifPresent(freeItemsFromRight::add);
+            anyFreePlayItem.ifPresent(freeItemsFromRight::add);
         }
 
         for (int i = 1; i <= 3; i++) {
             final int index = i;
-            Optional<PlayItem> any = board.getPlayItems().stream()
+            Optional<PlayItem> anyPlayerPlayItem = board.getPlayItems().stream()
                     .filter(playItem -> playItem.getPlayer() != null && playItem.getPlayItemPosition().getCol() == index && playItem
                             .getPlayItemPosition()
                             .getRow() == (4 - index) && playItem.getPlayer().getName().equals(playerName)).findAny();
-            any.ifPresent(playerItemsFromRight::add);
+            anyPlayerPlayItem.ifPresent(playerItemsFromRight::add);
         }
 
         if (playerItemsFromRight.size() == 2 && freeItemsFromRight.size() == 1) {
-            return freeItemsFromRight.stream().findAny();
+            return Optional.ofNullable(freeItemsFromRight.get(0));
         }
 
         return Optional.empty();
     }
 
     private static PlayItem getRandomMove(Board board) {
-        List<PlayItem> playItemsWithNoPosition = board.getPlayItems()
+        List<PlayItem> freePlayItems = board.getPlayItems()
                 .stream().filter(playItem -> playItem.getPlayer() == null)
                 .collect(Collectors.toList());
 
         Random rand = new Random();
-        return playItemsWithNoPosition.get(rand.nextInt(playItemsWithNoPosition.size()));
+        return freePlayItems.get(rand.nextInt(freePlayItems.size()));
     }
 }

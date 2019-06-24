@@ -5,9 +5,16 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 import org.artjom.tictacttoe.board.Board;
+import org.artjom.tictacttoe.board.BoardService;
+import org.artjom.tictacttoe.playitem.PlayItem;
 import org.artjom.tictacttoe.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,30 +34,30 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize Board
         ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
-        board.setPlayItems(board.extractAllImagesAsPlayItems(playItemsLayout));
+        board.setPlayItems(this.extractAllImagesAsPlayItems(playItemsLayout));
 
         // initialize Players
         greenCup = new Player(GREEN_CUP, R.drawable.coffee_green);
         grayCup = new Player(GRAY_CUP, R.drawable.coffee_gray);
 
         // start positions will be initialized. Empty state and Positions based of current PlayItem case
-        board.clearBoard();
+        BoardService.clearBoard(board);
     }
 
     // handle event on click on play item
     public void onPlayItemClick(View view) {
         // first user try to make move
-        board.makeMove(greenCup, view, this);
+        BoardService.makeMove(board, greenCup, view, this);
         // second move from grayCup (computer)
         if (board.getPlayItems().stream().allMatch(playItem -> playItem.getPlayer() != null)) {
             gameOver(NOBODY);
         } else {
-            board.makeMove(grayCup, view, this);
+            BoardService.makeMove(board, grayCup, view, this);
         }
     }
 
     public void gameOver(String winner) {
-        board.disableBoard();
+        BoardService.disableBoard(board);
         final String resultText;
 
         if (winner.equals(NOBODY)) {
@@ -63,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, resultText, duration);
         toast.show();
+    }
+
+    private List<PlayItem> extractAllImagesAsPlayItems(ViewGroup layout) {
+        List<PlayItem> playItems = new ArrayList<>();
+        int childCount = layout.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            if (layout.getChildAt(i) instanceof ImageView) {
+                playItems.add((PlayItem) layout.getChildAt(i));
+            }
+        }
+
+        return playItems;
     }
 
     public void onResetClick(View view) {
