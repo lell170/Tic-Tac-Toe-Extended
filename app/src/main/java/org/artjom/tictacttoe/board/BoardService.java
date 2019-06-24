@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import static org.artjom.tictacttoe.MainActivity.GRAY_CUP;
+
 public class BoardService {
 
     public static void clearBoard(Board board) {
@@ -34,6 +36,9 @@ public class BoardService {
         playItem.setImageResource(player.getImageId());
 
         playItem.setTranslationY(-1000);
+        if (player.getName().equals(GRAY_CUP)) {
+            playItem.animate().setStartDelay(500);
+        }
         playItem.animate().translationYBy(1000).setDuration(500);
 
         PlayItemPosition playItemPositionByPlayItem = PlayItemService.getPlayItemPositionByPlayItem(playItem);
@@ -44,7 +49,7 @@ public class BoardService {
     public static void makeMove(Board board, Player player, View view, MainActivity mainActivity) {
         if (!board.isDisabled()) {
             PlayItem playItem;
-            if (player.getName().equals(MainActivity.GRAY_CUP)) {
+            if (player.getName().equals(GRAY_CUP)) {
                 playItem = PlayerService.getBestPossibleMove(board);
             } else {
                 playItem = (PlayItem) view;
