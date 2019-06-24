@@ -1,6 +1,7 @@
 package org.artjom.tictacttoe.playitem;
 
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +25,12 @@ public class PlayItemService {
 
     public static void animateWinnerPlayItems(List<PlayItem> winnerPlayItems) {
         winnerPlayItems.forEach(playItem -> {
-            AlphaAnimation animation = new AlphaAnimation(0.1f, 1.5f);
-            animation.setDuration(1000);
-            animation.setStartOffset(4000);
+            Animation animation = new AlphaAnimation(0.1f, 1.0f);
+            animation.setDuration(150);
+            animation.setRepeatCount(15);
             animation.willChangeBounds();
             animation.setFillAfter(false);
             playItem.startAnimation(animation);
-
         });
     }
 }
