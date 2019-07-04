@@ -7,4 +7,4 @@
 - This app is not published to google play store
 - have fun :-)
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Tictactoe_V1](https://github.com/lell170/Tic-Tac-Toe-Extended/blob/develop/app_v1.gif)
