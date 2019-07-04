@@ -30,6 +30,7 @@ public class PlayerService {
         winPositionMethods.add(() -> findVerticallyWinPosition(playerName, board));
         winPositionMethods.add(() -> findDiagonallyWinPositionFromLeft(playerName, board));
         winPositionMethods.add(() -> findDiagonallyWinPositionFromRight(playerName, board));
+        winPositionMethods.add(() -> Optional.of(getRandomMove(board)));
 
         Collections.shuffle(winPositionMethods);
 
