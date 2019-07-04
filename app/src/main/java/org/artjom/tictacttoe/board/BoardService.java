@@ -35,11 +35,11 @@ public class BoardService {
     private static void putPlayItemToBoard(PlayItem playItem, Player player) {
         playItem.setImageResource(player.getImageId());
 
-        playItem.setTranslationY(-1000);
+        playItem.setTranslationY(-3000);
         if (player.getName().equals(GRAY_CUP)) {
             playItem.animate().setStartDelay(500);
         }
-        playItem.animate().translationYBy(1000).setDuration(500);
+        playItem.animate().translationYBy(3000).setDuration(500);
 
         PlayItemPosition playItemPositionByPlayItem = PlayItemService.getPlayItemPositionByPlayItem(playItem);
         playItem.setPlayItemPosition(playItemPositionByPlayItem);
