@@ -4,7 +4,7 @@
 - Fix difficulty level bug
 - changed gitignore
 ##### for generate apk: #####
-
+- $ gradle assemble
 
 ![Tictactoe_V1](https://github.com/lell170/Tic-Tac-Toe-Extended/blob/develop/app_v1.gif)
 
