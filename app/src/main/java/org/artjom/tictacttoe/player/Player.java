@@ -6,7 +6,7 @@ public class Player {
 
     private int imageId;
 
-    public Player(String name, int imageId) {
+    public Player(final String name, final int imageId) {
         this.name = name;
         this.imageId = imageId;
     }
@@ -15,7 +15,7 @@ public class Player {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -23,7 +23,7 @@ public class Player {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
+    public void setImageId(final int imageId) {
         this.imageId = imageId;
     }
 }
