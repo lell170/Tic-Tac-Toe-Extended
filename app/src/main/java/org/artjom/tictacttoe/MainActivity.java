@@ -18,22 +18,22 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Board board = new Board();
+    private final Board board = new Board();
 
     private Player greenCup;
     private Player grayCup;
 
-    public final static String GREEN_CUP = "Green cup";
-    public final static String GRAY_CUP = "Gray cup";
-    public final static String NOBODY = "Nobody";
+    public static final String GREEN_CUP = "Green cup";
+    public static final String GRAY_CUP = "Gray cup";
+    public static final String NOBODY = "Nobody";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // initialize Board
-        ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
+        final ConstraintLayout playItemsLayout = findViewById(R.id.itemsLayout);
         board.setPlayItems(this.extractAllImagesAsPlayItems(playItemsLayout));
 
         // initialize Players
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // handle event on click on play item
-    public void onPlayItemClick(View view) {
+    public void onPlayItemClick(final View view) {
         // first user try to make move
         BoardService.makeMove(board, greenCup, view, this);
         // second move from grayCup (computer)
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void gameOver(String winner) {
+    public void gameOver(final String winner) {
         BoardService.disableBoard(board);
         final String resultText;
 
@@ -66,15 +66,15 @@ public class MainActivity extends AppCompatActivity {
             resultText = winner + " win";
         }
 
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(context, resultText, duration);
+        final Context context = getApplicationContext();
+        final int duration = Toast.LENGTH_LONG;
+        final Toast toast = Toast.makeText(context, resultText, duration);
         toast.show();
     }
 
-    private List<PlayItem> extractAllImagesAsPlayItems(ViewGroup layout) {
-        List<PlayItem> playItems = new ArrayList<>();
-        int childCount = layout.getChildCount();
+    private List<PlayItem> extractAllImagesAsPlayItems(final ViewGroup layout) {
+        final List<PlayItem> playItems = new ArrayList<>();
+        final int childCount = layout.getChildCount();
         for (int i = 0; i < childCount; i++) {
             if (layout.getChildAt(i) instanceof ImageView) {
                 playItems.add((PlayItem) layout.getChildAt(i));
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         return playItems;
     }
 
-    public void onResetClick(View view) {
+    public void onResetClick(final View view) {
         finish();
         startActivity(getIntent());
     }

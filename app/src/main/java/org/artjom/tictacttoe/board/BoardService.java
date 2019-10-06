@@ -17,22 +17,22 @@ import static org.artjom.tictacttoe.MainActivity.GRAY_CUP;
 
 public class BoardService {
 
-    public static void clearBoard(Board board) {
+    public static void clearBoard(final Board board) {
         board.setDisabled(false);
-        for (PlayItem playItem : board.getPlayItems()) {
+        for (final PlayItem playItem : board.getPlayItems()) {
             playItem.setPlayItemPosition(PlayItemService.getPlayItemPositionByPlayItem(playItem));
             playItem.setPlayer(null);
         }
     }
 
-    public static void disableBoard(Board board) {
+    public static void disableBoard(final Board board) {
         // disable board
         board.setDisabled(true);
         // disable all play items
         board.getPlayItems().forEach(playItem -> playItem.setEnabled(false));
     }
 
-    private static void putPlayItemToBoard(PlayItem playItem, Player player) {
+    private static void putPlayItemToBoard(final PlayItem playItem, final Player player) {
         playItem.setImageResource(player.getImageId());
 
         playItem.setTranslationY(-3000);
@@ -41,14 +41,14 @@ public class BoardService {
         }
         playItem.animate().translationYBy(3000).setDuration(500);
 
-        PlayItemPosition playItemPositionByPlayItem = PlayItemService.getPlayItemPositionByPlayItem(playItem);
+        final PlayItemPosition playItemPositionByPlayItem = PlayItemService.getPlayItemPositionByPlayItem(playItem);
         playItem.setPlayItemPosition(playItemPositionByPlayItem);
         playItem.setPlayer(player);
     }
 
-    public static void makeMove(Board board, Player player, View view, MainActivity mainActivity) {
+    public static void makeMove(final Board board, final Player player, final View view, final MainActivity mainActivity) {
         if (!board.isDisabled()) {
-            PlayItem playItem;
+            final PlayItem playItem;
             if (player.getName().equals(GRAY_CUP)) {
                 playItem = PlayerService.getBestPossibleMove(board);
             } else {
@@ -60,8 +60,8 @@ public class BoardService {
         }
     }
 
-    private static void checkForWin(Player player, Board board, MainActivity mainActivity) {
-        List<PlayItem> playItems = board.getPlayItems();
+    private static void checkForWin(final Player player, final Board board, final MainActivity mainActivity) {
+        final List<PlayItem> playItems = board.getPlayItems();
 
         if (isVerticallyWin(player, playItems)) {
             mainActivity.gameOver(player.getName());
@@ -76,12 +76,12 @@ public class BoardService {
         }
     }
 
-    private static boolean isDiagonallyWin(Player player, List<PlayItem> playItems) {
-        List<PlayItem> winnerPlayItems = new ArrayList<>();
+    private static boolean isDiagonallyWin(final Player player, final List<PlayItem> playItems) {
+        final List<PlayItem> winnerPlayItems = new ArrayList<>();
 
-        boolean fromLeft = IntStream.rangeClosed(1, 3)
-                .boxed()
-                .allMatch(integer -> playItems.stream()
+        final boolean fromLeft = IntStream.rangeClosed(1, 3)
+                                          .boxed()
+                                          .allMatch(integer -> playItems.stream()
                         .anyMatch(playItem -> {
                             if (playItem.getPlayItemPosition() != null) {
                                 return playItem.getPlayItemPosition().getRow() == integer &&
@@ -91,9 +91,9 @@ public class BoardService {
                             return false;
                         }));
 
-        boolean fromRight = IntStream.rangeClosed(1, 3)
-                .boxed()
-                .allMatch(integer -> playItems.stream()
+        final boolean fromRight = IntStream.rangeClosed(1, 3)
+                                           .boxed()
+                                           .allMatch(integer -> playItems.stream()
                         .anyMatch(playItem -> {
                             if (playItem.getPlayItemPosition() != null) {
 
@@ -122,14 +122,14 @@ public class BoardService {
         return false;
     }
 
-    private static boolean isHorizontallyWin(Player player, List<PlayItem> playItems) {
-        List<PlayItem> winnerPlayItems = new ArrayList<>();
+    private static boolean isHorizontallyWin(final Player player, final List<PlayItem> playItems) {
+        final List<PlayItem> winnerPlayItems = new ArrayList<>();
 
-        boolean win = IntStream.rangeClosed(1, 3)
-                .boxed()
-                .anyMatch(rowNr -> IntStream.rangeClosed(1, 3).allMatch(colNr -> {
-                    Optional<PlayItem> playItemByPosition = PlayItemService.getPlayItemByPosition(playItems, rowNr, colNr);
-                    boolean present = playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
+        final boolean win = IntStream.rangeClosed(1, 3)
+                                     .boxed()
+                                     .anyMatch(rowNr -> IntStream.rangeClosed(1, 3).allMatch(colNr -> {
+                    final Optional<PlayItem> playItemByPosition = PlayItemService.getPlayItemByPosition(playItems, rowNr, colNr);
+                    final boolean present = playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
                     if (present) {
                         winnerPlayItems.add(playItemByPosition.get());
                     }
@@ -142,14 +142,14 @@ public class BoardService {
         return win;
     }
 
-    private static boolean isVerticallyWin(Player player, List<PlayItem> playItems) {
-        List<PlayItem> winnerPlayItems = new ArrayList<>();
+    private static boolean isVerticallyWin(final Player player, final List<PlayItem> playItems) {
+        final List<PlayItem> winnerPlayItems = new ArrayList<>();
 
-        boolean win = IntStream.rangeClosed(1, 3)
-                .boxed()
-                .anyMatch(colNr -> IntStream.rangeClosed(1, 3).allMatch(rowNr -> {
-                    Optional<PlayItem> playItemByPosition = PlayItemService.getPlayItemByPosition(playItems, rowNr, colNr);
-                    boolean present = playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
+        final boolean win = IntStream.rangeClosed(1, 3)
+                                     .boxed()
+                                     .anyMatch(colNr -> IntStream.rangeClosed(1, 3).allMatch(rowNr -> {
+                    final Optional<PlayItem> playItemByPosition = PlayItemService.getPlayItemByPosition(playItems, rowNr, colNr);
+                    final boolean present = playItemByPosition.filter(playItem -> playItem.getPlayer() == player).isPresent();
                     if (present) {
                         winnerPlayItems.add(playItemByPosition.get());
                     }

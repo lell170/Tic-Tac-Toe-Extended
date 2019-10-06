@@ -7,7 +7,7 @@ public class PlayItemPosition {
     private int row;
     private int col;
 
-    public PlayItemPosition(int row, int col) {
+    public PlayItemPosition(final int row, final int col) {
         this.row = row;
         this.col = col;
     }
@@ -16,7 +16,7 @@ public class PlayItemPosition {
         return row;
     }
 
-    public void setRow(int row) {
+    public void setRow(final int row) {
         this.row = row;
     }
 
@@ -24,15 +24,15 @@ public class PlayItemPosition {
         return col;
     }
 
-    public void setCol(int col) {
+    public void setCol(final int col) {
         this.col = col;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PlayItemPosition that = (PlayItemPosition) o;
+        final PlayItemPosition that = (PlayItemPosition) o;
         return row == that.row &&
                 col == that.col;
     }

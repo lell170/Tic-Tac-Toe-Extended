@@ -14,7 +14,7 @@ public class Board {
         return playItems;
     }
 
-    public void setPlayItems(List<PlayItem> playItems) {
+    public void setPlayItems(final List<PlayItem> playItems) {
         this.playItems = playItems;
     }
 
@@ -22,7 +22,7 @@ public class Board {
         return disabled;
     }
 
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(final boolean disabled) {
         this.disabled = disabled;
     }
 }

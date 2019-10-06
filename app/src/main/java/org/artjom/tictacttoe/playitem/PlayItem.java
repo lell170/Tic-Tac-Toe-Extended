@@ -11,15 +11,15 @@ public class PlayItem extends AppCompatImageView {
 
     private Player player;
 
-    public PlayItem(Context context) {
+    public PlayItem(final Context context) {
         super(context);
     }
 
-    public PlayItem(Context context, AttributeSet attrs) {
+    public PlayItem(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PlayItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PlayItem(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -27,7 +27,7 @@ public class PlayItem extends AppCompatImageView {
         return playItemPosition;
     }
 
-    public void setPlayItemPosition(PlayItemPosition playItemPosition) {
+    public void setPlayItemPosition(final PlayItemPosition playItemPosition) {
         this.playItemPosition = playItemPosition;
     }
 
@@ -35,7 +35,7 @@ public class PlayItem extends AppCompatImageView {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(final Player player) {
         this.player = player;
     }
 
